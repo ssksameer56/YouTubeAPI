@@ -14,6 +14,12 @@ Simple API to Search and Store YouTube Results
 
 
 # How To Run
+
+##Prerequisites
+  1. Clone the repo on your local system
+  2. Install the .NET CORE SDK (5.0) https://dotnet.microsoft.com/download/dotnet
+  3. Use dot net sdk or docker to run the API
+
 ## You can run the API using DOT NET Core SDK by using the following command from the solution folder
   `dot net run`
   
@@ -25,6 +31,11 @@ Simple API to Search and Store YouTube Results
   `docker run -d -p 8080:80 --name myapp YouTubeAPI`
   
   https://docs.docker.com/samples/dotnetcore/#build-and-run-the-docker-image
+  
+## Testing
+  You can access the API at  https://localhost:5001/swagger/index.html if running locally
+  
+  If using docker, the port will change
   
 # Production Specific Things
   The code has in-memory database configured for testing purposes

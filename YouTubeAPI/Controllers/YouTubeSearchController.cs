@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,18 @@ namespace YouTubeAPI.Controllers
     [ApiController]
     public class YouTubeSearchController : ControllerBase
     {
-        DatabaseService _searchService;
-        private readonly int PAGE_SIZE = 50;
+        IDatabaseService _searchService;
+        private readonly IConfiguration _configuration;
+        private int PAGE_SIZE;
+        private bool CHECK_RECENT;
+        private int DELAY;
 
-        public YouTubeSearchController(DatabaseService searchService)
+
+        public YouTubeSearchController(IDatabaseService searchService, IConfiguration configuration)
         {
             _searchService = searchService;
+            _configuration = configuration;
+            PAGE_SIZE = _configuration.GetSection("YouTube").GetValue<int>("SearchSize");
         }
         [HttpGet("searchKeyword")]
         public List<YouTubeSearchResult> SearchByKeyword(string title, string description)

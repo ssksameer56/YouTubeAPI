@@ -1,0 +1,12 @@
+CREATE TABLE YouTubeSearchResults(
+SearchCacheID INT NOT NULL IDENTITY(1,1),
+Title VARCHAR(MAX) NOT NULL,
+[Description] VARCHAR(MAX) NOT NULL,
+PublishedDate DATETIME NOT NULL,
+YouTubeID VARCHAR(30) NOT NULL,
+CONSTRAINT [PK_YouTubeSearchResults] PRIMARY KEY CLUSTERED
+(
+	PublishedDate DESC,
+	SearchCacheID
+)
+)

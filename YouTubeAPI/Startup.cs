@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using YouTubeAPI.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
+using YouTubeAPI.Services;
 
 namespace YouTubeAPI
 {
@@ -33,12 +34,24 @@ namespace YouTubeAPI
             {
                 // Use a Scoped container to create jobs
                 q.UseMicrosoftDependencyInjectionScopedJobFactory();
+                var jobKey = new JobKey("YouTubeCacheJob");
+
+                // Register the job with the DI container
+                q.AddJob<YouTubeCacheJob>(opts => opts.WithIdentity(jobKey));
+
+                // Create a trigger for the job
+                q.AddTrigger(opts => opts
+                    .ForJob(jobKey) // link to the HelloWorldJob
+                    .WithIdentity("YouTubeCacheJob-trigger") // give the trigger a unique name
+                    .WithCronSchedule("0/5 * * * * ?")); // run every 5 seconds
             });
 
             // Add the Quartz.NET hosted service
 
             services.AddQuartzHostedService(
                 q => q.WaitForJobsToComplete = true);
+            services.AddScoped<IYouTubeSearch, YouTubeSearch>();
+            services.AddScoped<IDatabaseService, DatabaseService>();
             services.AddControllers();
             services.AddMvc();
             services.AddDbContext<YouTubeCacheContext>(opt => opt.UseInMemoryDatabase("YouTubeDB"));

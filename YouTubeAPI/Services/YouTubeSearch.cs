@@ -17,7 +17,7 @@ namespace YouTubeAPI.Services
     /// <summary>
     /// Class to Search From YouTube
     /// </summary>
-    public class YouTubeSearch
+    public class YouTubeSearch : IYouTubeSearch
     {
         YouTubeService _youTubeService;
         public YouTubeSearch()

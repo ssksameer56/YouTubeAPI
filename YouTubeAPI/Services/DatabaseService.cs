@@ -10,7 +10,7 @@ namespace YouTubeAPI.Services
     /// <summary>
     /// Service that handles the Database interactions
     /// </summary>
-    public class DatabaseService
+    public class DatabaseService : IDatabaseService
     {
         YouTubeCacheContext _dbContext;
 

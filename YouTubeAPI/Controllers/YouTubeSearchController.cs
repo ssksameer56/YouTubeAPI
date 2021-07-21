@@ -3,44 +3,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using YouTubeAPI.Models;
+using YouTubeAPI.Services;
 
 namespace YouTubeAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/YouTubeAPI")]
     [ApiController]
     public class YouTubeSearchController : ControllerBase
     {
-        // GET: api/<YouTubeSearchController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        DatabaseService _searchService;
+        private readonly int PAGE_SIZE = 50;
+
+        public YouTubeSearchController(DatabaseService searchService)
         {
-            return new string[] { "value1", "value2" };
+            _searchService = searchService;
+        }
+        [HttpGet("searchKeyword")]
+        public List<YouTubeSearchResult> SearchByKeyword(string title, string description)
+        {
+            return _searchService.SearchByKeyword(title, description);
         }
 
-        // GET api/<YouTubeSearchController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("searchAllResults")]
+        public List<YouTubeSearchResult> SearchAllResults(int pageNumber = 0)
         {
-            return "value";
-        }
-
-        // POST api/<YouTubeSearchController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<YouTubeSearchController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<YouTubeSearchController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return _searchService.SearchByPagination(pageNumber, PAGE_SIZE);
         }
     }
 }

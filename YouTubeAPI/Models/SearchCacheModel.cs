@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace YouTubeAPI.Models
 {
+    /// <summary>
+    /// Model to be used in the database
+    /// </summary>
     public class SearchCacheModel
     {
         public int SearchCacheID { get; set; }

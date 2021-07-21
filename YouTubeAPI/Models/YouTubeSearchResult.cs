@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace YouTubeAPI.Models
 {
+    /// <summary>
+    /// Model to map results from YouTube
+    /// </summary>
     public class YouTubeSearchResult
     {
         public string Title { get; set; }

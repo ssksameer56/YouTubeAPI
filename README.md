@@ -15,7 +15,7 @@ Simple API to Search and Store YouTube Results
 
 # How To Run
 
-##Prerequisites
+## Prerequisites
   1. Clone the repo on your local system
   2. Install the .NET CORE SDK (5.0) https://dotnet.microsoft.com/download/dotnet
   3. Use dot net sdk or docker to run the API

@@ -24,7 +24,7 @@ namespace YouTubeAPI.Services
         {
             _youTubeService = new YouTubeService(new BaseClientService.Initializer()
             {
-                ApiKey = "REPLACE_ME",
+                ApiKey = "AIzaSyBZRDiASxyMs4oLi106dN8d1smB-eeVrMY",
                 ApplicationName = this.GetType().ToString()
             });
         }

@@ -32,7 +32,7 @@ namespace YouTubeAPI.Services
                 YoutubeID = x.YouTubeID,
                 PublishedDateTime = x.PublishedDateTime
             });
-            _dbContext.AddRange(results);
+            _dbContext.AddRange(dbResults);
             _dbContext.SaveChanges();
         }
 
@@ -44,19 +44,29 @@ namespace YouTubeAPI.Services
         /// <returns></returns>
         public List<YouTubeSearchResult> SearchByKeyword(string title, string description)
         {
-            var results = _dbContext.Results.Where(x => x.Title.Contains(title)
-            || x.Description.Contains(description));
-            if (results.Any())
+            var words = title.Split(" ").ToList();
+            words.AddRange(description.Split(" "));
+            var finalResults = new List<YouTubeSearchResult>();
+            foreach(var word in words)
             {
-                var dbResults = results.Select(x => new YouTubeSearchResult
+                var results = _dbContext.Results.Where(x => x.Title.Contains(word)
+                || x.Description.Contains(word));
+                if (results.Any())
                 {
-                    Title = x.Title,
-                    Description = x.Description,
-                    PublishedDateTime = x.PublishedDateTime,
-                    YouTubeID = x.YoutubeID
-                });
-                return dbResults.Distinct().ToList();
+                    var dbResults = results.Select(x => new YouTubeSearchResult
+                    {
+                        Title = x.Title,
+                        Description = x.Description,
+                        PublishedDateTime = x.PublishedDateTime,
+                        YouTubeID = x.YoutubeID
+                    });
+                    finalResults.AddRange(dbResults);
+                }
             }
+            if(finalResults.Any())
+                return finalResults.ToList().GroupBy(x => x.YouTubeID)
+                        .Select(p => p.First())
+                        .ToList();
             else
                 return new List<YouTubeSearchResult>();
         }
@@ -81,7 +91,9 @@ namespace YouTubeAPI.Services
                     PublishedDateTime = x.PublishedDateTime,
                     YouTubeID = x.YoutubeID
                 });
-                return dbResults.Distinct().ToList();
+                return dbResults.ToList().GroupBy(x => x.YouTubeID)
+                    .Select(p => p.First())
+                    .ToList();
             }
             return new List<YouTubeSearchResult>();
         }

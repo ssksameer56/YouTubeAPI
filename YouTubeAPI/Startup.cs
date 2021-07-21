@@ -15,6 +15,8 @@ using YouTubeAPI.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 using YouTubeAPI.Services;
+using System.Reflection;
+using System.IO;
 
 namespace YouTubeAPI
 {
@@ -58,6 +60,9 @@ namespace YouTubeAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "YouTubeAPI", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 

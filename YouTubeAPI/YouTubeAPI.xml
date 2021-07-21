@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>YouTubeAPI</name>
+    </assembly>
+    <members>
+        <member name="M:YouTubeAPI.Controllers.YouTubeSearchController.SearchByKeyword(System.String)">
+            <summary>
+            Gets YouTube results by keywords
+            </summary>
+            <param name="keywords">words seperated by space</param>
+            <returns></returns>
+        </member>
+        <member name="M:YouTubeAPI.Controllers.YouTubeSearchController.SearchAllResults(System.Int32)">
+            <summary>
+            Search All Results from the Database
+            </summary>
+            <param name="pageNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="T:YouTubeAPI.Models.SearchCacheModel">
+            <summary>
+            Model to be used in the database
+            </summary>
+        </member>
+        <member name="T:YouTubeAPI.Models.YouTubeSearchResult">
+            <summary>
+            Model to map results from YouTube
+            </summary>
+        </member>
+        <member name="T:YouTubeAPI.Services.DatabaseService">
+            <summary>
+            Service that handles the Database interactions
+            </summary>
+        </member>
+        <member name="M:YouTubeAPI.Services.DatabaseService.StoreResults(System.Collections.Generic.List{YouTubeAPI.Models.YouTubeSearchResult})">
+            <summary>
+            Stores the data to Database
+            </summary>
+            <param name="results">Youtube results</param>
+        </member>
+        <member name="M:YouTubeAPI.Services.DatabaseService.SearchByKeyword(System.String)">
+            <summary>
+            Searches database for videos with specific keyword
+            </summary>
+            <param name="title">keyword to search in title</param>
+            <param name="description">keyword to search in description</param>
+            <returns></returns>
+        </member>
+        <member name="M:YouTubeAPI.Services.DatabaseService.SearchByPagination(System.Int32,System.Int32)">
+            <summary>
+            Searches all data in page format
+            </summary>
+            <param name="pageNumber">the page number to return </param>
+            <param name="amount">number of records in a page</param>
+            <returns></returns>
+        </member>
+        <member name="T:YouTubeAPI.Services.YouTubeSearch">
+            <summary>
+            Class to Search From YouTube
+            </summary>
+        </member>
+        <member name="M:YouTubeAPI.Services.YouTubeSearch.SearchForVideo(System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            Searches For Video Results From YouTube
+            </summary>
+            <param name="keyword">Keyword to Search</param>
+            <param name="checkRecent">Bool to Find Recent videos or cached ones</param>
+            <param name="amountInSeconds">Delay in Minutes in case need recent results</param>
+            <param name="numberOfSearches"> Number of video results to find</param>
+            <returns></returns>
+        </member>
+        <member name="M:YouTubeAPI.Services.YouTubeSearch.UpdateAPIKey(System.String)">
+            <summary>
+            Update API Key of the Service
+            </summary>
+            <param name="key">The new Key</param>
+        </member>
+        <member name="M:YouTubeCacheJob.Execute(Quartz.IJobExecutionContext)">
+            <summary>
+            Job that caches Youtube results into the Database
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

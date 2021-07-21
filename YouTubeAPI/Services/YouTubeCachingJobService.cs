@@ -14,6 +14,7 @@ public class YouTubeCacheJob : IJob
     private readonly IConfiguration _configuration;
     private readonly bool CHECK_RECENT;
     private readonly int SEARCH_SIZE;
+    private readonly string KEYWORD;
 
     public YouTubeCacheJob(IYouTubeSearch ytService, IDatabaseService dbService, IConfiguration configuration)
     {
@@ -23,6 +24,7 @@ public class YouTubeCacheJob : IJob
         DELAY = _configuration.GetSection("YouTube").GetValue<int>("Delay");
         CHECK_RECENT = _configuration.GetSection("YouTube").GetValue<bool>("CheckRecent");
         SEARCH_SIZE = _configuration.GetSection("YouTube").GetValue<int>("SearchSize");
+        KEYWORD = _configuration.GetSection("YouTube").GetValue<string>("keywordToSearch");
     }
 
     /// <summary>
@@ -32,7 +34,7 @@ public class YouTubeCacheJob : IJob
     /// <returns></returns>
     public Task Execute(IJobExecutionContext context)
     {
-        var results = _youtubeSearch.SearchForVideo("cricket", CHECK_RECENT, DELAY, SEARCH_SIZE);
+        var results = _youtubeSearch.SearchForVideo(KEYWORD, CHECK_RECENT, DELAY, SEARCH_SIZE);
         _dbService.StoreResults(results);
         return Task.CompletedTask;
     }

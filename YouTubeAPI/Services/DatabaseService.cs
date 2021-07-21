@@ -42,15 +42,14 @@ namespace YouTubeAPI.Services
         /// <param name="title">keyword to search in title</param>
         /// <param name="description">keyword to search in description</param>
         /// <returns></returns>
-        public List<YouTubeSearchResult> SearchByKeyword(string title, string description)
+        public List<YouTubeSearchResult> SearchByKeyword(string keyword)
         {
-            var words = title.Split(" ").ToList();
-            words.AddRange(description.Split(" "));
+            var words = keyword.Split(" ").ToList();
             var finalResults = new List<YouTubeSearchResult>();
             foreach(var word in words)
             {
-                var results = _dbContext.Results.Where(x => x.Title.Contains(word)
-                || x.Description.Contains(word));
+                var results = _dbContext.Results.Where(x => x.Title.Contains(word,StringComparison.CurrentCultureIgnoreCase)
+                || x.Description.Contains(word,StringComparison.CurrentCultureIgnoreCase));
                 if (results.Any())
                 {
                     var dbResults = results.Select(x => new YouTubeSearchResult
@@ -64,8 +63,7 @@ namespace YouTubeAPI.Services
                 }
             }
             if(finalResults.Any())
-                return finalResults.ToList().GroupBy(x => x.YouTubeID)
-                        .Select(p => p.First())
+                return finalResults
                         .ToList();
             else
                 return new List<YouTubeSearchResult>();
@@ -91,8 +89,7 @@ namespace YouTubeAPI.Services
                     PublishedDateTime = x.PublishedDateTime,
                     YouTubeID = x.YoutubeID
                 });
-                return dbResults.ToList().GroupBy(x => x.YouTubeID)
-                    .Select(p => p.First())
+                return dbResults
                     .ToList();
             }
             return new List<YouTubeSearchResult>();

@@ -34,10 +34,10 @@ namespace YouTubeAPI.Services
         /// </summary>
         /// <param name="keyword">Keyword to Search</param>
         /// <param name="checkRecent">Bool to Find Recent videos or cached ones</param>
-        /// <param name="amountInMinutes">Delay in Minutes in case need recent results</param>
+        /// <param name="amountInSeconds">Delay in Minutes in case need recent results</param>
         /// <param name="numberOfSearches"> Number of video results to find</param>
         /// <returns></returns>
-        public List<YouTubeSearchResult> SearchForVideo(string keyword, bool checkRecent, int amountInMinutes, int numberOfSearches)
+        public List<YouTubeSearchResult> SearchForVideo(string keyword, bool checkRecent, int amountInSeconds, int numberOfSearches)
         {
             var searchListRequest = _youTubeService.Search.List("snippet");
             searchListRequest.Q = keyword;
@@ -45,7 +45,7 @@ namespace YouTubeAPI.Services
             searchListRequest.Type = "video";
             if (checkRecent)
             {
-                searchListRequest.PublishedAfter = DateTime.UtcNow.AddMinutes(-amountInMinutes);
+                searchListRequest.PublishedAfter = DateTime.UtcNow.AddSeconds(-amountInSeconds);
             }
 
             try

@@ -6,6 +6,10 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\skolpekw062419\source\repos\YouTubeAPI\YouTubeAPI\YouTubeAPI.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Google.Apis" Version="1.52.0" />
     <PackageReference Include="Google.Apis.Auth" Version="1.52.0" />

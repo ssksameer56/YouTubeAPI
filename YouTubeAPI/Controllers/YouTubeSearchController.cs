@@ -26,12 +26,24 @@ namespace YouTubeAPI.Controllers
             _configuration = configuration;
             PAGE_SIZE = _configuration.GetSection("YouTube").GetValue<int>("SearchSize");
         }
+
+
+        /// <summary>
+        /// Gets YouTube results by keywords
+        /// </summary>
+        /// <param name="keywords">words seperated by space</param>
+        /// <returns></returns>
         [HttpGet("searchKeyword")]
-        public List<YouTubeSearchResult> SearchByKeyword(string title, string description)
+        public List<YouTubeSearchResult> SearchByKeyword(string keywords)
         {
-            return _searchService.SearchByKeyword(title, description);
+            return _searchService.SearchByKeyword(keywords);
         }
 
+        /// <summary>
+        /// Search All Results from the Database
+        /// </summary>
+        /// <param name="pageNumber"></param>
+        /// <returns></returns>
         [HttpGet("searchAllResults")]
         public List<YouTubeSearchResult> SearchAllResults(int pageNumber = 0)
         {

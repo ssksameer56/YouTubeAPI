@@ -43,6 +43,8 @@ Simple API to Search and Store YouTube Results
   Actual Database can be linked by chaning the connection string in Startup.cs file
   
   https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/working-with-sql?view=aspnetcore-5.0&tabs=visual-studio
+  
+  The folder 'SQL Scripts' contains the required scripts to be run on a database to create the required tables
 
 # App.settings
 You can edit the following entries in the app.settings

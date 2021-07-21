@@ -13,7 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YouTubeAPI.DataAccess;
 using Microsoft.EntityFrameworkCore;
-
+using Quartz;
 
 namespace YouTubeAPI
 {
@@ -29,7 +29,16 @@ namespace YouTubeAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddQuartz(q =>
+            {
+                // Use a Scoped container to create jobs
+                q.UseMicrosoftDependencyInjectionScopedJobFactory();
+            });
 
+            // Add the Quartz.NET hosted service
+
+            services.AddQuartzHostedService(
+                q => q.WaitForJobsToComplete = true);
             services.AddControllers();
             services.AddMvc();
             services.AddDbContext<YouTubeCacheContext>(opt => opt.UseInMemoryDatabase("YouTubeDB"));

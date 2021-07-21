@@ -13,6 +13,10 @@ using YouTubeAPI.Models;
 
 namespace YouTubeAPI.Services
 {
+ 
+    /// <summary>
+    /// Class to Search From YouTube
+    /// </summary>
     public class YouTubeSearch
     {
         YouTubeService _youTubeService;
@@ -25,10 +29,18 @@ namespace YouTubeAPI.Services
             });
         }
 
+        /// <summary>
+        /// Searches For Video Results From YouTube
+        /// </summary>
+        /// <param name="keyword">Keyword to Search</param>
+        /// <param name="checkRecent">Bool to Find Recent videos or cached ones</param>
+        /// <param name="amountInMinutes">Delay in Minutes in case need recent results</param>
+        /// <param name="numberOfSearches"> Number of video results to find</param>
+        /// <returns></returns>
         public List<YouTubeSearchResult> SearchForVideo(string keyword, bool checkRecent, int amountInMinutes, int numberOfSearches)
         {
             var searchListRequest = _youTubeService.Search.List("snippet");
-            searchListRequest.Q = keyword; // Replace with your search term.
+            searchListRequest.Q = keyword;
             searchListRequest.MaxResults = numberOfSearches;
             searchListRequest.Type = "video";
             if (checkRecent)
@@ -36,7 +48,6 @@ namespace YouTubeAPI.Services
                 searchListRequest.PublishedAfter = DateTime.UtcNow.AddMinutes(-amountInMinutes);
             }
 
-            // Call the search.list method to retrieve results matching the specified query term.
             try
             {
                 var searchListResponse = searchListRequest.ExecuteAsync();
@@ -64,6 +75,10 @@ namespace YouTubeAPI.Services
             
         }
 
+        /// <summary>
+        /// Update API Key of the Service
+        /// </summary>
+        /// <param name="key">The new Key</param>
         public void UpdateAPIKey(string key)
         {
             _youTubeService = new YouTubeService(new BaseClientService.Initializer()

@@ -7,15 +7,22 @@ using YouTubeAPI.Models;
 
 namespace YouTubeAPI.Services
 {
-    public class SearchCachingService
+    /// <summary>
+    /// Service that handles the Database interactions
+    /// </summary>
+    public class DatabaseService
     {
         YouTubeCacheContext _dbContext;
 
-        public SearchCachingService(YouTubeCacheContext dbContext)
+        public DatabaseService(YouTubeCacheContext dbContext)
         {
             _dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Stores the data to Database
+        /// </summary>
+        /// <param name="results">Youtube results</param>
         public void StoreResults(List<YouTubeSearchResult> results)
         {
             var dbResults = results.Select(x => new SearchCacheModel
@@ -29,6 +36,12 @@ namespace YouTubeAPI.Services
             _dbContext.SaveChanges();
         }
 
+        /// <summary>
+        /// Searches database for videos with specific keyword
+        /// </summary>
+        /// <param name="title">keyword to search in title</param>
+        /// <param name="description">keyword to search in description</param>
+        /// <returns></returns>
         public List<YouTubeSearchResult> SearchByKeyword(string title, string description)
         {
             var results = _dbContext.Results.Where(x => x.Title.Contains(title)
@@ -48,6 +61,12 @@ namespace YouTubeAPI.Services
                 return new List<YouTubeSearchResult>();
         }
 
+        /// <summary>
+        /// Searches all data in page format
+        /// </summary>
+        /// <param name="pageNumber">the page number to return </param>
+        /// <param name="amount">number of records in a page</param>
+        /// <returns></returns>
         public List<YouTubeSearchResult> SearchByPagination(int pageNumber, int amount)
         {
             var results = _dbContext.Results.OrderByDescending(x => x.PublishedDateTime)

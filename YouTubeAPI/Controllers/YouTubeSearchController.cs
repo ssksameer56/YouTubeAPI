@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +14,16 @@ namespace YouTubeAPI.Controllers
     [ApiController]
     public class YouTubeSearchController : ControllerBase
     {
-        IDatabaseService _searchService;
+        readonly IDatabaseService _searchService;
+        private readonly ILogger<YouTubeSearchController> _logger;
         private readonly IConfiguration _configuration;
-        private int PAGE_SIZE;
-        private bool CHECK_RECENT;
-        private int DELAY;
+        private readonly int PAGE_SIZE;
 
 
-        public YouTubeSearchController(IDatabaseService searchService, IConfiguration configuration)
+        public YouTubeSearchController(IDatabaseService searchService, IConfiguration configuration, ILogger<YouTubeSearchController> logger)
         {
             _searchService = searchService;
+            _logger = logger;
             _configuration = configuration;
             PAGE_SIZE = _configuration.GetSection("YouTube").GetValue<int>("SearchSize");
         }
@@ -36,6 +37,7 @@ namespace YouTubeAPI.Controllers
         [HttpGet("searchKeyword")]
         public List<YouTubeSearchResult> SearchByKeyword(string keywords)
         {
+            _logger.LogInformation($"Searching by {keywords}");
             return _searchService.SearchByKeyword(keywords);
         }
 
@@ -47,6 +49,7 @@ namespace YouTubeAPI.Controllers
         [HttpGet("searchAllResults")]
         public List<YouTubeSearchResult> SearchAllResults(int pageNumber = 0)
         {
+            _logger.LogInformation($"Searching for results on pageNumber {pageNumber}");
             return _searchService.SearchByPagination(pageNumber, PAGE_SIZE);
         }
     }

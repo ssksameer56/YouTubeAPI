@@ -9,6 +9,7 @@ using Google.Apis.Upload;
 using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
+using Microsoft.Extensions.Logging;
 using YouTubeAPI.Models;
 
 namespace YouTubeAPI.Services
@@ -19,9 +20,11 @@ namespace YouTubeAPI.Services
     /// </summary>
     public class YouTubeSearch : IYouTubeSearch
     {
+        private readonly ILogger<YouTubeSearch> _logger;
         YouTubeService _youTubeService;
-        public YouTubeSearch()
+        public YouTubeSearch(ILogger<YouTubeSearch> logger)
         {
+            _logger = logger;
             _youTubeService = new YouTubeService(new BaseClientService.Initializer()
             {
                 ApiKey = "AIzaSyBZRDiASxyMs4oLi106dN8d1smB-eeVrMY",
@@ -39,6 +42,7 @@ namespace YouTubeAPI.Services
         /// <returns></returns>
         public List<YouTubeSearchResult> SearchForVideo(string keyword, bool checkRecent, int amountInSeconds, int numberOfSearches)
         {
+            _logger.LogInformation($"Getting data for {keyword} for last {amountInSeconds}");
             var searchListRequest = _youTubeService.Search.List("snippet");
             searchListRequest.Q = keyword;
             searchListRequest.MaxResults = numberOfSearches;
@@ -53,7 +57,7 @@ namespace YouTubeAPI.Services
                 var searchListResponse = searchListRequest.ExecuteAsync();
 
                 List<YouTubeSearchResult> videos = new();
-
+               
                 foreach (var searchResult in searchListResponse.Result.Items)
                 {
                     videos.Add(new YouTubeSearchResult
@@ -64,7 +68,7 @@ namespace YouTubeAPI.Services
                         YouTubeID = searchResult.Id.VideoId
                     });
                 }
-
+                _logger.LogInformation($"Obtained list of {videos.Count} from YouTube");
                 return videos;
             }
             catch (AggregateException e)
@@ -81,6 +85,7 @@ namespace YouTubeAPI.Services
         /// <param name="key">The new Key</param>
         public void UpdateAPIKey(string key)
         {
+            _logger.LogInformation($"Updating API Key for YouTube");
             _youTubeService = new YouTubeService(new BaseClientService.Initializer()
             {
                 ApiKey = key,

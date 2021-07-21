@@ -7,6 +7,9 @@ using YouTubeAPI.Models;
 
 namespace YouTubeAPI.DataAccess
 {
+    /// <summary>
+    /// Class to handle DB Information
+    /// </summary>
     public class YouTubeCacheContext : DbContext
     {
         public YouTubeCacheContext(DbContextOptions<YouTubeCacheContext> options)

@@ -18,6 +18,11 @@
             <param name="pageNumber"></param>
             <returns></returns>
         </member>
+        <member name="T:YouTubeAPI.DataAccess.YouTubeCacheContext">
+            <summary>
+            Class to handle DB Information
+            </summary>
+        </member>
         <member name="T:YouTubeAPI.Models.SearchCacheModel">
             <summary>
             Model to be used in the database

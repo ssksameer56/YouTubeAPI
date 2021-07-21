@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,10 +14,12 @@ namespace YouTubeAPI.Services
     public class DatabaseService : IDatabaseService
     {
         YouTubeCacheContext _dbContext;
+        private readonly ILogger<DatabaseService> _logger;
 
-        public DatabaseService(YouTubeCacheContext dbContext)
+        public DatabaseService(YouTubeCacheContext dbContext, ILogger<DatabaseService> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         /// <summary>
@@ -25,6 +28,7 @@ namespace YouTubeAPI.Services
         /// <param name="results">Youtube results</param>
         public void StoreResults(List<YouTubeSearchResult> results)
         {
+            _logger.LogInformation($"Storing {results.Count}");
             var dbResults = results.Select(x => new SearchCacheModel
             {
                 Title = x.Title,
@@ -62,11 +66,15 @@ namespace YouTubeAPI.Services
                     finalResults.AddRange(dbResults);
                 }
             }
-            if(finalResults.Any())
+            _logger.LogInformation($"Retrieving {finalResults.Count}");
+            if (finalResults.Any())
                 return finalResults
                         .ToList();
             else
+            {
+                _logger.LogInformation($"No results");
                 return new List<YouTubeSearchResult>();
+            }
         }
 
         /// <summary>
@@ -89,9 +97,11 @@ namespace YouTubeAPI.Services
                     PublishedDateTime = x.PublishedDateTime,
                     YouTubeID = x.YoutubeID
                 });
+                _logger.LogInformation($"Retrieving {dbResults.Count()}");
                 return dbResults
                     .ToList();
             }
+            _logger.LogInformation($"No results");
             return new List<YouTubeSearchResult>();
         }
     }

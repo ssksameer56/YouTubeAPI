@@ -11,6 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YouTubeAPI.DataAccess;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace YouTubeAPI
 {
@@ -28,6 +31,8 @@ namespace YouTubeAPI
         {
 
             services.AddControllers();
+            services.AddMvc();
+            services.AddDbContext<YouTubeCacheContext>(opt => opt.UseInMemoryDatabase("YouTubeDB"));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "YouTubeAPI", Version = "v1" });

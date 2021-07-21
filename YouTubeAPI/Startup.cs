@@ -73,10 +73,10 @@ namespace YouTubeAPI
             loggerFactory.AddFile($"{path}\\Logs\\YouTubeAPI.log");
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "YouTubeAPI v1"));
+                app.UseDeveloperExceptionPage();               
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "YouTubeAPI v1"));
 
             app.UseHttpsRedirection();
 

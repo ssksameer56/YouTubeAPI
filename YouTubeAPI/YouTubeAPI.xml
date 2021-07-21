@@ -75,7 +75,7 @@
             <param name="numberOfSearches"> Number of video results to find</param>
             <returns></returns>
         </member>
-        <member name="M:YouTubeAPI.Services.YouTubeSearch.UpdateAPIKey(System.String)">
+        <member name="M:YouTubeAPI.Services.YouTubeSearch.UpdateAPIKey">
             <summary>
             Update API Key of the Service
             </summary>

@@ -9,6 +9,7 @@ using Google.Apis.Upload;
 using Google.Apis.Util.Store;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using YouTubeAPI.Models;
 
@@ -20,14 +21,19 @@ namespace YouTubeAPI.Services
     /// </summary>
     public class YouTubeSearch : IYouTubeSearch
     {
+        private readonly IConfiguration _configuration;
         private readonly ILogger<YouTubeSearch> _logger;
         YouTubeService _youTubeService;
-        public YouTubeSearch(ILogger<YouTubeSearch> logger)
+        string[] _keys;
+        private int keyCount = 0;
+        public YouTubeSearch(ILogger<YouTubeSearch> logger, IConfiguration configuration)
         {
+            _configuration = configuration;
+            _keys = _configuration["YouTube:Keys"].Split(',');
             _logger = logger;
             _youTubeService = new YouTubeService(new BaseClientService.Initializer()
             {
-                ApiKey = "AIzaSyBZRDiASxyMs4oLi106dN8d1smB-eeVrMY",
+                ApiKey = _keys[keyCount++],
                 ApplicationName = this.GetType().ToString()
             });
         }
@@ -72,8 +78,10 @@ namespace YouTubeAPI.Services
                 return videos;
             }
             catch (AggregateException e)
-            {                
-                Console.WriteLine(e.Message);
+            {
+                _logger.LogError($"Could not retrieve content from YouTube {e.Message}");
+                if (e.Message.Contains("quota"))
+                    UpdateAPIKey();
                 throw;
             }
             
@@ -83,8 +91,10 @@ namespace YouTubeAPI.Services
         /// Update API Key of the Service
         /// </summary>
         /// <param name="key">The new Key</param>
-        public void UpdateAPIKey(string key)
+        public void UpdateAPIKey()
         {
+            var key = _keys[keyCount];
+            keyCount = (keyCount++) % _keys.Length;
             _logger.LogInformation($"Updating API Key for YouTube");
             _youTubeService = new YouTubeService(new BaseClientService.Initializer()
             {
